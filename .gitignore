@@ -1,0 +1,7 @@
+*.xls
+*.pyc
+*.db
+*.xlsx
+*.txt
+*.json
+!data.json
