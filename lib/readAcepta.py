@@ -10,7 +10,8 @@ from lib.database import Database
 class ReadAcepta:
     def __init__(self, datos):
         self.datos = datos
-
+        self.process_files()
+        
     def normalizeRut(self, string):
         # Normalizar el formato de RUT
         string = [w.replace(',00', '') for w in string]

@@ -9,7 +9,10 @@ from lib.database import Database
 class ReadCFP:
     def __init__(self, datos):
         self.datos = datos
+        self.process_clasification_files()
+        self.process_cfp_files()
 
+        
     def normalizeDateConta(self, dateString):
         # Normalizar la fecha en formato 'dd/mm/yyyy' a 'yyyy-mm-dd'
         return dateString.replace(['(\d{2}).(\d{2}).(\d{2})?(\d{2})'], ['\g<4>-\g<2>-\g<1>'], regex=True)
