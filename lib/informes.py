@@ -3,7 +3,8 @@ import sqlite3
 import numpy as np
 from datetime import datetime
 from datetime import date
-
+import xlsxwriter
+import matplotlib.pyplot as plt
 
 class Informes(object):
 
@@ -130,7 +131,6 @@ class Informes(object):
 			    c.YEAR desc \
 		"
 		comparativa_nual = pd.read_sql_query(consulta, cnx)
-
 
 		writer = pd.ExcelWriter(r'./output/'+item+'.xlsx', engine='xlsxwriter',options={'strings_to_urls': False})
 		df_item.to_excel(writer, sheet_name='Mensual Historico')

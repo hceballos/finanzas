@@ -4,6 +4,7 @@ from lib.informes  import Informes
 from lib.readAcepta  import ReadAcepta
 from lib.readCFP  import ReadCFP
 from lib.readJson  import ReadJson
+import subprocess
 
 class main(ReadJson):
 	def __init__(self, json_path):
@@ -14,6 +15,10 @@ class main(ReadJson):
 		ReadCFP(datos)		# Cartera financiera presupuestaria - devengo & Clasificador
 		Informes()			# Informes generados en Output
 		
+		comando_scrapy = ["scrapy", "crawl", "facturas", "-o", "../input/facturas/facturas.json"]
+		subprocess.run(comando_scrapy, cwd="scrapyAcepta")
+
+
 json_path = r'../finanzas/data/data.json'
 
 if __name__ == '__main__':
