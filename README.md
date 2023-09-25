@@ -11,7 +11,7 @@
 
 ### Estado de Ejecución Presupuestaria
 
-- **Fecha**: 01/06/21 hasta 30/06/21
+- **Fecha**: 01/01/2X hasta 31/12/2X
 - **Tipo de Presupuesto**: Gasto
 - **Catálogo Concepto Presupuestario**:
     - 22 BIENES Y SERVICIOS DE CONSUMO
