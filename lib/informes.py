@@ -132,6 +132,47 @@ class Informes(object):
 		"
 		comparativa_nual = pd.read_sql_query(consulta, cnx)
 
+		# ----------------------------------------------------------------------------------------------
+
+		consulta = " \
+			SELECT \
+				clas.subtitulo as categoria, \
+				clas.item as subcategoria, \
+				clas.denominacion as denominacion, \
+				c.*, \
+				COALESCE(a.uri, 'N#A') AS acepta_info, \
+				COALESCE(a.folio_oc, 'N#A') AS orden_de_compra, \
+				f.NmbItem, \
+				f.DscItem, \
+				f.Cantidad, \
+				f.PrcItem, \
+				f.MontoItem \
+			FROM \
+				(SELECT cfp.* FROM cfp)c \
+				LEFT JOIN(SELECT clasificador.* FROM clasificador)clas  ON c.concepto = clas.denominacion \
+				LEFT JOIN(SELECT acepta.* FROM acepta)a  ON c.unico = a.unico \
+				LEFT JOIN(SELECT facturas.* FROM facturas)f  ON c.unico = f.unico \
+			WHERE \
+				clas.item = '"+item+"' \
+		"
+		df_compra = pd.read_sql_query(consulta, cnx)
+
+		df_compra["mes"].replace({1 :'Ene', 2 :'Feb', 3 :'Mar', 4 :'Abr', 5 :'May', 6 :'Jun', 7 :'Jul', 8 :'Ago', 9 :'Sep', 10 :'Oct', 11 :'Nov', 12 :'Dic'}, inplace=True)
+
+		# ----------------------------------------------------------------------------------------------
+		df_compra0 = pd.pivot_table(df_compra,
+							index = ["concepto", "principal", "year", "mes", "numero", "Cantidad", "PrcItem", "MontoItem", "NmbItem", "DscItem", "acepta_info"],
+							#columns = ["year", "mes"],
+							#values = ["Nombre"],
+							#aggfunc = [np.sum],
+							fill_value = 0,
+							margins = False
+							)
+
+		df_compra0.rename(columns={1 :'Ene', 2 :'Feb', 3 :'Mar', 4 :'Abr', 5 :'May', 6 :'Jun', 7 :'Jul', 8 :'Ago', 9 :'Sep', 10 :'Oct', 11 :'Nov', 12 :'Dic', 'Concepto':'concepto', 'Principal':'principal', 'Monto Documento':'montoDocumento', 'Fecha Generación':'fechaGeneracion', 'Folio':'folio', 'Título':'titulo', 'Número Documento': 'numero', 'Fecha Documento':'fechaDocumento', 'Tipo Documento':'tipoDocumento','Monto Documento.1':'monto'}, inplace=True)
+		# ----------------------------------------------------------------------------------------------
+
+
 		writer = pd.ExcelWriter(r'./output/'+item+'.xlsx', engine='xlsxwriter',options={'strings_to_urls': False})
 		df_item.to_excel(writer, sheet_name='Mensual Historico')
 		comparativa_nual.to_excel(writer, sheet_name='Comparativa Anual', index=False)
@@ -139,4 +180,5 @@ class Informes(object):
 		df_principal.to_excel(writer, sheet_name='Proveedor')
 		df_facturacion.to_excel(writer, sheet_name='Facturacion')
 		df_testUrl.to_excel(writer, sheet_name='Facturas y OC')
+		df_compra0.to_excel(writer, sheet_name='compra')
 		writer.save()
