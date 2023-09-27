@@ -12,10 +12,10 @@ class main(ReadJson):
 		ReadJson.__init__(self, json_path)
 		datos = self.datos
 		
-		#ReadAcepta(datos) 	# Acepta - para tener listado de las OC
-		#ReadCFP(datos)		# Cartera financiera presupuestaria - devengo & Clasificador
-		#subprocess.run(["scrapy", "crawl", "facturas", "-o", "../input/facturas/facturas.json"], cwd="scrapyAcepta")			# Scrapy a Acepta
-		#ReadFacturas(datos)
+		ReadAcepta(datos) 	# Acepta - para tener listado de las OC
+		ReadCFP(datos)		# Cartera financiera presupuestaria - devengo & Clasificador
+		subprocess.run(["scrapy", "crawl", "facturas", "-o", "../input/facturas/facturas.json"], cwd="scrapyAcepta")			# Scrapy a Acepta
+		ReadFacturas(datos)
 		Informes()			# Informes generados en Output
 
 
